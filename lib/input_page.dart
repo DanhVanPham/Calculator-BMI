@@ -1,12 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'icon_data.dart';
 import 'reuseable_card.dart';
+import 'constants.dart';
 
-const heightContainerBottom = 80.0;
-const activeBacColorCard = Color(0xff1d1e33);
-const inacticeBacColorCard = Color(0xff111328);
-const backgroundColorBottom = Color(0xffeb1555);
 enum GenderType { male, female }
 
 class InputPage extends StatefulWidget {
@@ -15,11 +13,12 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  Color maleColor = inacticeBacColorCard;
-  Color femaleColor = inacticeBacColorCard;
+  Color maleColor = kInacticeBacColorCard;
+  Color femaleColor = kInacticeBacColorCard;
 
   // male = 1; female = 2
   GenderType selectedGender = GenderType.male;
+  int height = 180, weight = 0, age = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,8 +34,8 @@ class _InputPageState extends State<InputPage> {
                     Expanded(
                       child: ReuseableCard(
                         colour: selectedGender == GenderType.male
-                            ? activeBacColorCard
-                            : inacticeBacColorCard,
+                            ? kActiveBacColorCard
+                            : kInacticeBacColorCard,
                         cardChild: IconContent(
                           iconData: FontAwesomeIcons.mars,
                           label: 'MALE',
@@ -51,8 +50,8 @@ class _InputPageState extends State<InputPage> {
                     Expanded(
                       child: ReuseableCard(
                         colour: selectedGender == GenderType.female
-                            ? activeBacColorCard
-                            : inacticeBacColorCard,
+                            ? kActiveBacColorCard
+                            : kInacticeBacColorCard,
                         cardChild: IconContent(
                           iconData: FontAwesomeIcons.venus,
                           label: 'FEMALE',
@@ -68,32 +67,125 @@ class _InputPageState extends State<InputPage> {
                 ),
               ),
               Expanded(
-                child: ReuseableCard(colour: activeBacColorCard),
+                child: ReuseableCard(
+                  colour: kActiveBacColorCard,
+                  cardChild: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Text(
+                          'HEIGHT',
+                          style: kLabelTextStyle,
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.baseline,
+                        textBaseline: TextBaseline.alphabetic,
+                        children: [
+                          Text(
+                            height.toString(),
+                            style: kTextStyleBold,
+                          ),
+                          Text(
+                            'cm',
+                            style: kLabelTextStyle,
+                          ),
+                        ],
+                      ),
+                      Slider(
+                        value: height.toDouble(),
+                        min: 120,
+                        max: 220,
+                        activeColor: Color(0xffeb1555),
+                        inactiveColor: Color(0xff8d8e98),
+                        onChanged: (double value) {
+                          setState(() {
+                            height = value.round();
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               ),
               Expanded(
                 child: Row(
                   children: [
                     Expanded(
-                      child: ReuseableCard(colour: activeBacColorCard),
+                      child: ReuseableCard(
+                        colour: kActiveBacColorCard,
+                        cardChild: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Center(
+                              child: Text(
+                                'WEIGHT',
+                                style: kLabelTextStyle,
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.baseline,
+                              textBaseline: TextBaseline.alphabetic,
+                              children: [
+                                Text(
+                                  weight.toString(),
+                                  style: kTextStyleBold,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     Expanded(
-                      child: ReuseableCard(colour: activeBacColorCard),
+                      child: ReuseableCard(
+                        colour: kActiveBacColorCard,
+                        cardChild: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Center(
+                              child: Text(
+                                'AGE',
+                                style: kLabelTextStyle,
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.baseline,
+                              textBaseline: TextBaseline.alphabetic,
+                              children: [
+                                Text(
+                                  age.toString(),
+                                  style: kTextStyleBold,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
-              Container(
-                color: backgroundColorBottom,
-                margin: EdgeInsets.only(top: 10.0),
-                width: double.infinity,
-                height: heightContainerBottom,
-                child: Center(
-                    child: Text(
-                  'CALCULATOR YOUR BMI',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                  ),
-                )),
+              GestureDetector(
+                child: Container(
+                  color: kBackgroundColorBottom,
+                  margin: EdgeInsets.only(top: 10.0),
+                  width: double.infinity,
+                  height: kHeightContainerBottom,
+                  child: Center(
+                      child: Text(
+                    'CALCULATOR YOUR BMI',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                    ),
+                  )),
+                ),
               )
             ],
           ),
