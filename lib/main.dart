@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'input_page.dart';
+import 'screens/input_page.dart';
+import 'screens/result_page.dart';
+import 'screens/calculator_brain.dart';
 
 void main() {
   runApp(BMICalculator());

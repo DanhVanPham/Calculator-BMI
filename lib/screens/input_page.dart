@@ -1,9 +1,13 @@
+import 'package:bmi_calculator/screens/calculator_brain.dart';
+import 'package:bmi_calculator/screens/result_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'icon_data.dart';
-import 'reuseable_card.dart';
-import 'constants.dart';
+import 'package:bmi_calculator/components/icon_data.dart';
+import '../components/reuseable_card.dart';
+import '../constants.dart';
+import '../components/button_bottom.dart';
+import 'package:bmi_calculator/components/round_icon.dart';
 
 enum GenderType { male, female }
 
@@ -19,11 +23,16 @@ class _InputPageState extends State<InputPage> {
   // male = 1; female = 2
   GenderType? selectedGender;
   int height = 180, weight = 40, age = 18;
+  double result = 0;
+  double calculateBmi() {
+    return result = weight / (height * 0.01 * 2);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('BMI CALCULATOR'),
+          title: Center(child: Text('BMI CALCULATOR')),
         ),
         body: Container(
           child: Column(
@@ -240,47 +249,24 @@ class _InputPageState extends State<InputPage> {
                   ],
                 ),
               ),
-              GestureDetector(
-                child: Container(
-                  color: kBackgroundColorBottom,
-                  margin: EdgeInsets.only(top: 10.0),
-                  width: double.infinity,
-                  height: kHeightContainerBottom,
-                  child: Center(
-                      child: Text(
-                    'CALCULATOR YOUR BMI',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                    ),
-                  )),
-                ),
+              ButtonBottom(
+                textButton: 'CALCULATOR YOUR BMI',
+                onTap: () {
+                  CalculatorBrain calc =
+                      CalculatorBrain(height: height, weight: weight);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ResultPage(
+                                bmiResult: calc.calculateBMI(),
+                                interpretation: calc.getInterpretation(),
+                                resultText: calc.getResultText(),
+                              )));
+                },
               )
             ],
           ),
         ));
-  }
-}
-
-class RoundIconButton extends StatelessWidget {
-  RoundIconButton({required this.iconData, required this.onPress});
-
-  IconData iconData;
-
-  VoidCallback onPress;
-
-  @override
-  Widget build(BuildContext context) {
-    return RawMaterialButton(
-      constraints: BoxConstraints.tightFor(
-        width: 50.0,
-        height: 50.0,
-      ),
-      shape: CircleBorder(),
-      fillColor: Color(0xff4c4f5e),
-      child: Icon(iconData),
-      elevation: 6.0,
-      onPressed: onPress,
-    );
   }
 }
 
